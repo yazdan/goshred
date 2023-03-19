@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/yazdan/goshred/internal"
 )
@@ -21,11 +22,8 @@ var (
 This tool will overwrite your file 3 times with random content then deletes it`,
 		Args: cobra.ExactArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Printf("Inside rootCmd Run with args: %v\n", args)
-			// Call the function here
-			// fmt.Printf("Inside toggle: %t\n", toggle)
-			fmt.Printf("file size %d\n", internal.GetFileSize(args[0]))
-			fmt.Printf("wiping %s %t\n", args[0], internal.Shred(args[0]))
+			var fs = afero.NewOsFs()
+			fmt.Printf("wiping %s %t\n", args[0], internal.Shred(args[0], fs))
 		},
 	}
 )
